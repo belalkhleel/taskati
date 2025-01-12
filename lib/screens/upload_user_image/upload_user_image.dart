@@ -4,6 +4,8 @@ import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:taskati/core/utils/colors.dart';
 import 'package:taskati/core/widgets/custom_button.dart';
+import 'package:taskati/features/navigator.dart';
+import 'package:taskati/screens/home/home_screen.dart';
 
 class UploadUserImage extends StatefulWidget {
   UploadUserImage({super.key});
@@ -45,7 +47,13 @@ class _UploadUserImageState extends State<UploadUserImage> {
             TextButton(
                 onPressed: () {
                   if (uploadScreenKey.currentState!.validate() &&
-                      image != null) {}
+                      image != null) {
+                    pushAndRemoveUntil(context, page: HomeScreen());
+                  }
+                  else {
+                    ScaffoldMessenger.of(context).showSnackBar(
+                        SnackBar(content: Text("Please upload an image")));
+                  }
                 },
                 child: Text("Done"))
           ],
@@ -82,30 +90,33 @@ class _UploadUserImageState extends State<UploadUserImage> {
                 color: AppColor.primary,
                 thickness: 4,
               ),
-              TextFormField(
-                validator: (value) {
-                  if (value!.isEmpty) {
-                    return "Please enter your name";
-                  }
-                  else if(!RegExp('^[A-z][a-z]{2,8}').hasMatch(value)){
-                    return  'Name must start with a capital letter and be at least 3 characters';
-                  }else {
-                    return null;
-                  }
-                },
-                decoration: InputDecoration(
-                  hintText: "Enter your name",
-                  enabledBorder: OutlineInputBorder(
-                    borderSide: BorderSide(color: AppColor.primary),
-                    borderRadius: BorderRadius.circular(10),
-                  ),
-                  errorBorder: OutlineInputBorder(
-                    borderSide: BorderSide(color: AppColor.error),
-                    borderRadius: BorderRadius.circular(10),
-                  ),
-                  focusedBorder: OutlineInputBorder(
-                    borderSide: BorderSide(color: AppColor.primary),
-                    borderRadius: BorderRadius.circular(10),
+              Padding(
+                padding: const EdgeInsets.all(12.0),
+                child: TextFormField(
+                  validator: (value) {
+                    if (value!.isEmpty) {
+                      return "Please enter your name";
+                    }
+                    else if(!RegExp('^[A-z][a-z]{2,8}').hasMatch(value)){
+                      return  'Name must start with a capital letter and be at least 3 characters';
+                    }else {
+                      return null;
+                    }
+                  },
+                  decoration: InputDecoration(
+                    hintText: "Enter your name",
+                    enabledBorder: OutlineInputBorder(
+                      borderSide: BorderSide(color: AppColor.primary),
+                      borderRadius: BorderRadius.circular(10),
+                    ),
+                    errorBorder: OutlineInputBorder(
+                      borderSide: BorderSide(color: AppColor.error),
+                      borderRadius: BorderRadius.circular(10),
+                    ),
+                    focusedBorder: OutlineInputBorder(
+                      borderSide: BorderSide(color: AppColor.primary),
+                      borderRadius: BorderRadius.circular(10),
+                    ),
                   ),
                 ),
               ),
