@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:hive_flutter/adapters.dart';
+import 'package:taskati/screens/create_Task/create_task.dart';
 import 'package:taskati/screens/intro/splash_screen.dart';
 
 import 'screens/upload_user_image/upload_user_image.dart';
@@ -18,7 +19,7 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      home:  UploadUserImage(),
+      home:  CreateTask(),
     );
   }
 }

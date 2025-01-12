@@ -4,6 +4,8 @@ import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:taskati/core/utils/colors.dart';
 import 'package:taskati/core/widgets/custom_button.dart';
+import 'package:taskati/core/widgets/custom_text_form_field.dart';
+import 'package:taskati/core/widgets/image.dart';
 import 'package:taskati/features/navigator.dart';
 import 'package:taskati/screens/home/home_screen.dart';
 
@@ -63,13 +65,7 @@ class _UploadUserImageState extends State<UploadUserImage> {
             mainAxisAlignment: MainAxisAlignment.center,
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
-              CircleAvatar(
-                radius: 70,
-                backgroundImage: image != null
-                    ? FileImage(image!) // Use FileImage for local file
-                    : NetworkImage(
-                        "https://cdn-icons-png.flaticon.com/512/149/149071.png"), // Use NetworkImage for URL
-              ),
+             ImageWidget(image: image),
               SizedBox(
                 height: 20,
               ),
@@ -92,8 +88,9 @@ class _UploadUserImageState extends State<UploadUserImage> {
               ),
               Padding(
                 padding: const EdgeInsets.all(12.0),
-                child: TextFormField(
-                  validator: (value) {
+                child: CustomTextFormField(
+                  controller: TextEditingController(),
+                  validation:  (value) {
                     if (value!.isEmpty) {
                       return "Please enter your name";
                     }
@@ -103,22 +100,7 @@ class _UploadUserImageState extends State<UploadUserImage> {
                       return null;
                     }
                   },
-                  decoration: InputDecoration(
-                    hintText: "Enter your name",
-                    enabledBorder: OutlineInputBorder(
-                      borderSide: BorderSide(color: AppColor.primary),
-                      borderRadius: BorderRadius.circular(10),
-                    ),
-                    errorBorder: OutlineInputBorder(
-                      borderSide: BorderSide(color: AppColor.error),
-                      borderRadius: BorderRadius.circular(10),
-                    ),
-                    focusedBorder: OutlineInputBorder(
-                      borderSide: BorderSide(color: AppColor.primary),
-                      borderRadius: BorderRadius.circular(10),
-                    ),
-                  ),
-                ),
+                )
               ),
             ],
           ),

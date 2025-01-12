@@ -15,7 +15,7 @@ class CustomTextStyle extends TextStyle{
     return TextStyle(
         color: color ?? AppColor.primary,
         fontSize: fontSize ?? 24,
-        fontWeight: fontWeight ?? FontWeight.normal);
+        fontWeight: fontWeight ?? FontWeight.bold);
   }
 
 
@@ -25,7 +25,7 @@ class CustomTextStyle extends TextStyle{
     return TextStyle(
         color: color ?? AppColor.tertiary,
         fontSize: fontSize ?? 16,
-        fontWeight: FontWeight.w300);
+        fontWeight: FontWeight.bold);
   }
   }
 
