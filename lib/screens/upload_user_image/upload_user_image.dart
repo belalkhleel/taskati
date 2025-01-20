@@ -1,6 +1,7 @@
 import 'dart:io';
 
 import 'package:flutter/material.dart';
+import 'package:hive_flutter/hive_flutter.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:taskati/core/utils/colors.dart';
 import 'package:taskati/core/widgets/custom_button.dart';
@@ -8,6 +9,10 @@ import 'package:taskati/core/widgets/custom_text_form_field.dart';
 import 'package:taskati/core/widgets/image.dart';
 import 'package:taskati/features/navigator.dart';
 import 'package:taskati/screens/home/home_screen.dart';
+
+import '../../app_const.dart';
+import '../../core/model/user.dart';
+import '../../features/imag_picker_logic.dart';
 
 class UploadUserImage extends StatefulWidget {
   UploadUserImage({super.key});
@@ -17,27 +22,9 @@ class UploadUserImage extends StatefulWidget {
 }
 
 class _UploadUserImageState extends State<UploadUserImage> {
+  final nameController = TextEditingController();
   final uploadScreenKey = GlobalKey<FormState>();
-  File? image;
-  final ImagePicker picker = ImagePicker();
-
-  void pickImageFromGallery() async {
-// Pick an image.
-    final XFile? _image = await picker.pickImage(source: ImageSource.gallery);
-    if (_image != null) {
-      image = File(_image.path);
-      setState(() {});
-    }
-  }
-
-  void pickImageFromCamera() async {
-// Pick an image.
-    final XFile? _image = await picker.pickImage(source: ImageSource.camera);
-    if (_image != null) {
-      image = File(_image.path);
-      setState(() {});
-    }
-  }
+  String? image;
 
   @override
   Widget build(BuildContext context) {
@@ -50,9 +37,11 @@ class _UploadUserImageState extends State<UploadUserImage> {
                 onPressed: () {
                   if (uploadScreenKey.currentState!.validate() &&
                       image != null) {
+                    UserModel user =
+                        UserModel(name: nameController.text, image: image!);
+                    Hive.box<UserModel>(userDB).put('user', user);
                     pushAndRemoveUntil(context, page: HomeScreen());
-                  }
-                  else {
+                  } else {
                     ScaffoldMessenger.of(context).showSnackBar(
                         SnackBar(content: Text("Please upload an image")));
                   }
@@ -65,20 +54,42 @@ class _UploadUserImageState extends State<UploadUserImage> {
             mainAxisAlignment: MainAxisAlignment.center,
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
-             ImageWidget(image: image),
+              ImageWidget(image: image),
               SizedBox(
                 height: 20,
               ),
               CustomButton(
                 text: "Upload Image from gallery",
-                onPreassed: pickImageFromGallery,
+                onPreassed: () {
+                 pickImageFromGallery().then((val){
+                   if (val == null) {
+                   } else {
+                     image = val.path;
+                   }
+                   setState(() {
+
+                   });
+
+                 });
+                },
               ),
               SizedBox(
                 height: 20,
               ),
               CustomButton(
                 text: "Upload Image from camera",
-                onPreassed: pickImageFromCamera,
+                onPreassed: () {
+                  pickImageFromCamera().then((val) {
+                    if (val == null) {
+                    } else {
+                      image = val.path;
+                    }
+                    setState(() {
+
+                    });
+
+                  });
+                },
               ),
               Divider(
                 indent: 20,
@@ -87,21 +98,19 @@ class _UploadUserImageState extends State<UploadUserImage> {
                 thickness: 4,
               ),
               Padding(
-                padding: const EdgeInsets.all(12.0),
-                child: CustomTextFormField(
-                  controller: TextEditingController(),
-                  validation:  (value) {
-                    if (value!.isEmpty) {
-                      return "Please enter your name";
-                    }
-                    else if(!RegExp('^[A-z][a-z]{2,8}').hasMatch(value)){
-                      return  'Name must start with a capital letter and be at least 3 characters';
-                    }else {
-                      return null;
-                    }
-                  },
-                )
-              ),
+                  padding: const EdgeInsets.all(12.0),
+                  child: CustomTextFormField(
+                    controller: nameController,
+                    validation: (value) {
+                      if (value!.isEmpty) {
+                        return "Please enter your name";
+                      } else if (!RegExp('^[A-z][a-z]{2,8}').hasMatch(value)) {
+                        return 'Name must start with a capital letter and be at least 3 characters';
+                      } else {
+                        return null;
+                      }
+                    },
+                  )),
             ],
           ),
         ),

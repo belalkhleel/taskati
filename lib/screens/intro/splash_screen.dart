@@ -1,9 +1,14 @@
 import 'package:flutter/material.dart';
+import 'package:hive_flutter/hive_flutter.dart';
 import 'package:lottie/lottie.dart';
+import 'package:taskati/app_const.dart';
 import 'package:taskati/core/utils/colors.dart';
 import 'package:taskati/core/utils/text_style.dart';
 import 'package:taskati/features/navigator.dart';
+import 'package:taskati/screens/home/home_screen.dart';
 import 'package:taskati/screens/upload_user_image/upload_user_image.dart';
+
+import '../../core/model/user.dart';
 
 class SplashScreen extends StatefulWidget {
   const SplashScreen({super.key});
@@ -13,9 +18,14 @@ class SplashScreen extends StatefulWidget {
 }
 
 class _SplashScreenState extends State<SplashScreen> {
+  final userBox=Hive.box<UserModel>(userDB);
+
   @override
   void initState() {
-    Future.delayed(Duration(seconds:5),() => pushWithReplacement(context, page: UploadUserImage()),);
+    userBox.isEmpty?
+    Future.delayed(Duration(seconds:5),() => pushWithReplacement(context, page: UploadUserImage()),):
+    Future.delayed(Duration(seconds:5),() => pushWithReplacement(context, page: HomeScreen()),);
+
     super.initState();
   }
   @override

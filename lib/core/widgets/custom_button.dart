@@ -34,7 +34,7 @@ class CustomButton extends StatelessWidget {
       ):ElevatedButton.icon(
         onPressed: onPreassed,
         label: Text(text),
-        icon: Icon(icon),
+        icon: Icon(icon,color: textColor,),
         style: ElevatedButton.styleFrom(
             backgroundColor: color,
             foregroundColor: textColor,

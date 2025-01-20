@@ -12,6 +12,7 @@ class CustomNamedTextFormField extends StatelessWidget {
   final String? hintText;
   final int? maxLines;
   String? Function(String?)? validation;
+  IconData? icon;
 
   CustomNamedTextFormField({
     super.key,
@@ -22,7 +23,20 @@ class CustomNamedTextFormField extends StatelessWidget {
     required this.title,
     this.maxLines,
     this.validation,
-    this.hintText,});
+    this.hintText,
+  });
+
+  CustomNamedTextFormField.icon(
+      {super.key,
+      this.readOnly = false,
+      this.onTap,
+      this.KeyboardType = TextInputType.text,
+      required this.controller,
+      required this.title,
+      this.maxLines,
+      this.validation,
+      this.hintText,
+      required this.icon});
 
   @override
   Widget build(BuildContext context) {
@@ -36,16 +50,25 @@ class CustomNamedTextFormField extends StatelessWidget {
         SizedBox(
           height: 10,
         ),
-        CustomTextFormField(
-          readOnly: readOnly,
-          onTap: onTap,
-          KeyboardType: KeyboardType,
-          maxLines: maxLines,
-          controller: controller,
-          validation: validation,
-          hintText: hintText,
-
-        ),
+        icon == null
+            ? CustomTextFormField(
+                readOnly: readOnly,
+                onTap: onTap,
+                KeyboardType: KeyboardType,
+                maxLines: maxLines,
+                controller: controller,
+                validation: validation,
+                hintText: hintText,
+              )
+            : CustomTextFormField.icon(
+                readOnly: readOnly,
+                onTap: onTap,
+                KeyboardType: KeyboardType,
+                maxLines: maxLines,
+                controller: controller,
+                validation: validation,
+                hintText: hintText,
+                icon: icon)
       ],
     );
   }

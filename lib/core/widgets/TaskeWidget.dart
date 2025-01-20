@@ -1,21 +1,23 @@
 import 'package:flutter/material.dart';
 
+import '../model/task.dart';
 import '../utils/colors.dart';
 import '../utils/text_style.dart';
 
 class TaskWidget extends StatelessWidget {
-  const TaskWidget({super.key});
+  final Task task;
+  const TaskWidget({super.key,required this.task});
 
   @override
   Widget build(BuildContext context) {
     return  Card(
-      color: AppColor.primary,
+      color: task.level==Level.red?AppColor.red:task.level==Level.yellow?AppColor.orange:AppColor.primary,
       child: Row(
         children: [
           Expanded(
             child: ListTile(
               title: Text(
-                'Flutter Task ',
+                task.title,
                 style: CustomTextStyle.smallTextStyle(
                   color: AppColor.primaryContainer,
                 ),
@@ -28,7 +30,7 @@ class TaskWidget extends StatelessWidget {
                   ),
                   SizedBox(width: 10),
                   Text(
-                    '10:00 AM - 11:00 AM',
+                    '${task.startTime.format(context)} - ${task.endTime.format(context)}',
                     style: CustomTextStyle.smallTextStyle(
                       color: AppColor.primaryContainer,
                     ),

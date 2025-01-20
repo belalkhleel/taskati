@@ -10,16 +10,20 @@ class CustomWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return  Row(
+      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Column(
           mainAxisAlignment: MainAxisAlignment.start,
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Text(line1,style: CustomTextStyle.smallTextStyle(),),
+            FittedBox(
+                fit:  BoxFit.scaleDown,
+                child: Text(line1,style: CustomTextStyle.smallTextStyle(),maxLines: 1,overflow: TextOverflow.ellipsis,softWrap: true,)),
             Text(line2,style: CustomTextStyle.bodyTextStyle(),),
           ],
         ),
-        Spacer(),
+
         widget
       ],
     );

@@ -10,29 +10,42 @@ class CustomTextFormField extends StatelessWidget {
   final KeyboardType;
   String? hintText;
   final bool readOnly;
+  IconData? icon;
 
   final TextEditingController controller;
 
   CustomTextFormField(
       {super.key,
-        this.readOnly = false,
-       this.maxLines,
+      this.readOnly = false,
+      this.maxLines,
       this.validation,
       this.hintText,
       required this.controller,
       this.KeyboardType = TextInputType.text,
       this.onTap});
 
+  CustomTextFormField.icon(
+      {super.key,
+      this.readOnly = false,
+      this.maxLines,
+      this.validation,
+      this.hintText,
+      required this.controller,
+      this.KeyboardType = TextInputType.text,
+      this.onTap,
+      required this.icon});
+
   @override
   Widget build(BuildContext context) {
     return TextFormField(
       onTap: onTap,
-      readOnly:readOnly ,
+      readOnly: readOnly,
       maxLines: maxLines,
       keyboardType: KeyboardType,
       controller: controller,
       validator: validation,
       decoration: InputDecoration(
+        suffixIcon: icon==null?null:Icon(icon,color: AppColor.primary,),
         hintText: hintText,
         enabledBorder: OutlineInputBorder(
           borderSide: BorderSide(color: AppColor.primary),
